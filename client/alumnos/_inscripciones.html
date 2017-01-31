@@ -1,0 +1,24 @@
+<div class="row" ng-if="al.estaInscrito(al.alumno._id)">
+	<div class="col col-sm-12">
+		<section id="widget-pagos" data-widget-grid="data-widget-grid">
+		  <div class="row">
+		    <div class="col-sm-12">
+		      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-jarvis-widget="data-jarvis-widget" ng-repeat = "curso in al.inscripciones">
+		        <header>
+		          <h2>Inscripción {{ $index + 1 }} - {{curso.grupo.nombre}} - {{curso.grupo.turno.nombre}}</h2>
+		        </header>
+		        <div>
+		          <div class="widget-body">
+			          <div>
+			            <inscripcionplanpagos></inscripcionplanpagos>
+									<modalabonar></modalabonar>
+									<curricula></curricula>
+			          </div>						
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		</section>	
+	</div>
+</div>

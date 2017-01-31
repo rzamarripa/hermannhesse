@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+		<h1 class="page-title txt-color-blueDark">
+			<i class="fa fa-list fa-fw "></i> 
+				{{gp.grupo.nombre}}
+			<span>&gt; 
+				{{gp.asignacion.materia.nombre}}
+			</span>
+		</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-3">
+		<a class="btn btn-primary" href="./grupos">
+		  Listar Grupos
+		</a>
+	</div>
+	<div class="col-sm-6">
+		<label for="noAlumnos">Agregar alumnos</label>
+		<select name="noAlumnos" ng-model="gp.alumnose" class="js-example-basic-single"  style='width: 100%; '>
+			<option ng-value="alumno._id" ng-repeat="alumno in gp.balumnos">{{alumno.profile.nombreCompleto}}</option>
+		</select>
+	</div>
+	<div class="col-sm-1">
+		<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<button type="button" class="btn btn-primary" ng-click="gp.agregarAlumno()" ng-show="gp.confirmar == false;">
+			<i class="fa fa-plus fa-fw"></i> Agregar</span>
+		</button>
+		<button type="button" class="btn btn-primary" ng-click="gp.agregarAlumno()" ng-show="gp.confirmar == true;">
+			<i class="fa fa-check fa-fw"></i> Confirmar</span>
+		</button>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th class="text-center" width="5%">No.</th>
+					<th class="text-center" width="10%">Foto</th>
+					<th class="text-center" width="15%">Matrícula</th>
+					<th class="text-center">Nombre</th>
+					<th class="text-center" width="10%">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="alumno in gp.alumnos">
+					<td class="text-center">{{$index + 1}}</td>
+					<td class="text-center">
+						<img src="{{gp.tieneFoto(alumno.profile.sexo, alumno.profile.fotografia)}}" style="width: 70px;border-left: 4px solid #fff;">
+					</td>
+					<td class="text-center">{{alumno.profile.matricula}}</td>
+					<td><a href="/alumnos/{{alumno._id}}">{{alumno.profile.nombreCompleto}}</a></td>
+					<td>
+						<div class="text-center">
+					    <div class="btn-group">
+							  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="caret"></span>
+							    <span class="sr-only">Toggle Dropdown</span>
+							  </button>
+							  <ul class="dropdown-menu text-left">
+							    <li><a href="#" ng-click="gp.quitarAlumno(alumno._id)"><i class="fa fa-trash"></i> Eliminar</a></li>
+							  </ul>
+							</div>
+				    </div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

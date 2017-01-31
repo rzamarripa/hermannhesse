@@ -1,0 +1,88 @@
+<div class="row">
+	<div class="col-sm-4">
+		<a class="btn btn-primary" ui-sref="root.verAsistencias({grupo_id : masas.grupo._id, materia_id : masas.materia._id, maestro_id : masas.grupo.maestro_id})">
+		  Ver Asistencias
+		</a>
+		<a class="btn btn-primary" ui-sref="root.gruposMaestro">
+		  Mis Grupos
+		</a>
+	</div>
+</div><br/>
+<div class="row"  ng-if="masas.sePuede">
+	<article class="col-sm-4">
+		<div class="alert alert-success fade in">
+			<button class="close" data-dismiss="alert">
+				×
+			</button>
+			<i class="fa-fw fa fa-check"></i>
+			<strong>Asistencia</strong>.
+		</div>
+	</article>
+	<article class="col-sm-4">				
+		<div class="alert alert-warning fade in">
+			<button class="close" data-dismiss="alert">
+				×
+			</button>
+			<i class="fa-fw fa fa-warning"></i>
+			<strong>Justificante</strong>.
+		</div>
+	</article>	
+	<article class="col-sm-4">
+		<div class="alert alert-danger fade in">
+			<button class="close" data-dismiss="alert">
+				×
+			</button>
+			<i class="fa-fw fa fa-times"></i>
+			<strong>Inasistencia</strong>.
+		</div>
+	</article>
+</div>
+<div class="row" style="margin-top:50px;">
+  <div class="col-sm-12">
+		<div class="widget-body no-padding smart-form" ng-if="masas.sePuede">
+			<!-- content goes here -->			
+			<h5 class="todo-group-title"><i class="fa fa-list"></i> Lista de Asistencia - Grupo : {{masas.grupo.nombre}} - Materia : {{masas.materia.nombre}}
+				<span class="pull-right" style="margin-right: 30px;"><i class="fa fa-calendar"></i> {{masas.hoy | date:'dd-MM-yyyy HH:mm'}}</span>
+			</h5>
+			<ul id="sortable1" class="todo ui-sortable">
+				<li style="cursor: pointer;" ng-repeat="alumno in masas.listaAsistencia.alumnos" ng-click="masas.tomarAsistencia(alumno.estatus, $index)" ng-class="alumno.estatus == true ? '' : 'danger !important'">
+					<span ng-class="masas.getColorFondo(alumno.estatus)" style="width: 0px; padding: 5px;"> 
+						
+					</span>
+					<p class="project-members">
+<!-- 						<img ng-src="{{al.tieneFoto(alumno.profile.sexo, alumno.profile.fotografia)}}" data-img="img/superbox/superbox-full-1.jpg" alt="{{alumno.profile.nombreCompleto}}" title="{{alumno.profile.nombreCompleto" class="superbox-img"> -->
+						<img src="{{masas.tieneFoto(alumno.profile.sexo, alumno.profile.fotografia)}}" class="project-members" style="width: 50px;border-left: 6px solid #fff;" ng-class="masas.getColor(alumno.estatus)">
+						<strong>{{alumno.profile.matricula}}</strong> - {{alumno.profile.nombreCompleto}}
+					</p>
+				</li>		
+			</ul>
+			<footer ng-if="masas.sePuede">
+				<button ng-click="masas.guardar(masas.listaAsistencia)" class="btn btn-primary btn-lg" ng-if="!masas.existe">Guardar</button>
+				<button ng-click="masas.actualizar(masas.listaAsistencia)" class="btn btn-primary btn-lg" ng-if="masas.existe">Actualizar</button>
+			</footer>
+		</div>
+		<div class="widget-body no-padding smart-form" ng-if="!masas.sePuede">
+			<div class="row" style="margin-top: 100px;">
+				<div class="col-sm-12">
+					<div class="text-center error-box">
+						<h1 class="error-text tada animated"><i class="fa fa-warning text-warning"></i> Aviso</h1>
+						<h2 class="font-xl"><strong>No se puede tomar asistencia!</strong></h2>
+						<br>
+						<p class="lead semi-bold">
+							<strong>Ya se han tomado ({{masas.cantidadAsistenciasRealizadas}}) asistencias de ({{masas.asistenciasPermitidas}}) permitidas en la semana. </strong><br><br>
+							<small>
+								Si esto fuera alguna confusión, por favor revisarlo con Coordinación Académica.
+							</small>
+						</p>
+						<ul class="error-search text-left font-md">
+	            
+	            <li><a ui-sref="root.verAsistencias({grupo_id : masas.grupo._id, materia_id : masas.materia._id, maestro_id : Meteor.userId()})"><small><i class="fa fa-lg fa-fw fa-eye"></i> Ver Asistencias </small></a></li>
+	            <li><a ui-sref="root.gruposMaestro"><small><i class="fa fa-group"></i> Volver al Grupo </small></a></li>
+	            <li><a href="javascript:void(0);"><small><i class="fa fa-home"></i> Pánel de Control </small></a></li>
+		        </ul>
+					</div>	
+				</div>	
+			</div>
+		</div>
+  </div>
+</div>
