@@ -1,5 +1,6 @@
 Meteor.methods({
   createUsuario: function (usuario, rol) {
+  	usuario.contrasena = Math.random().toString(36).substring(2,7);
 	  profile = {
 				email: usuario.correo,
 				nombre: usuario.nombre,
@@ -21,8 +22,23 @@ Meteor.methods({
 		});
 		
 		Roles.addUsersToRoles(usuario_id, rol);
-		
+		Meteor.call('sendEmail',
+			profile.email,
+			'sistema@casserole.edu.mx',
+			'Bienvenido a Casserole',
+			'Usuario: '+ usuario.nombreUsuario + ' contraseña: '+ usuario.contrasena
+		);
+		return usuario_id;
 	},
+	sendEmail: function (to, from, subject, text) {
+    this.unblock();
+    Email.send({
+      to: to,
+      from: from,
+      subject: subject,
+      text: text
+    });
+  },
 	userIsInRole: function(usuario, rol, grupo, vista){
 		if (!Roles.userIsInRole(usuario, rol, grupo)) {
 	    throw new Meteor.Error(403, "Usted no tiene permiso para entrar a " + vista);
@@ -37,7 +53,8 @@ Meteor.methods({
 			sexo : usuario.sexo,
 			apellidos: usuario.apPaterno + " " + usuario.apMaterno,
 			nombreCompleto : usuario.nombre  + " " + usuario.apPaterno + " " + usuario.apMaterno,
-			fotografia : usuario.fotografia
+			fotografia : usuario.fotografia,
+			estatus : usuario.estatus
 		}
 	  
 	  if(usuario.maestro_id != undefined){
@@ -52,9 +69,7 @@ Meteor.methods({
 		}});
 		Accounts.setPassword(user._id, usuario.contrasena, {logout: false});
 	},
-	createGerenteVenta: function (usuario, rol) {
-	  console.log("Inscribir Alumno");
-	  
+	createGerenteVenta: function (usuario, rol) {	  
 	  usuario.profile.friends = [];
 	  
 		if(usuario.maestro_id != undefined)
@@ -72,7 +87,6 @@ Meteor.methods({
 		
 	},
 	updateGerenteVenta: function (usuario, rol) {		
-		console.log("usuario", usuario)
 		var user = Meteor.users.findOne(usuario._id);
 	  Meteor.users.update({_id: user._id}, {$set:{
 			username: usuario.username,
@@ -83,10 +97,8 @@ Meteor.methods({
 		Accounts.setPassword(user._id, usuario.password, {logout: false});		
 	},
 	updateDirector: function (usuario, rol) {		
-		console.log("usuario", usuario)
 		var usuarioViejo = Meteor.users.findOne({"profile.seccion_id" : usuario.profile.seccion_id});
 		var idTemp = usuarioViejo._id;
-		console.log("usuario viejo", usuarioViejo);
 	  Meteor.users.update({_id: idTemp}, {$set:{
 			username: usuario.username,
 			roles: [rol],
@@ -153,4 +165,8 @@ Meteor.methods({
 			Accounts.setPassword(user._id, usuario.password, {logout: false});		
 		}
 	},
+	usuarioActivo : function (usuario){
+		var usuarioActual = Meteor.users.findOne({username : usuario});
+		return usuarioActual.profile.estatus;
+	}
 });

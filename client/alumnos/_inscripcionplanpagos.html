@@ -1,4 +1,4 @@
-<form class="smart-form"  novalidate> 
+<form class="smart-form"  novalidate ng-class="{desactivado: curso.estatus == 0}"> 
 	<header>
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-9 pull-right">
@@ -13,11 +13,11 @@
 			</div>
 		</div>
 	</header>	
-	<div >
+	<div>
 		<h2> Conceptos de inscripción : </h2>	
 		<fieldset>
 			<div class="row">
-			<section class="col col-2" ng-click="al.seleccionarConcepto(cobro,curso)" ng-repeat = "cobro in curso.pagos" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
+			<section class="col col-2" ng-disabled="curso.estatus == 0" ng-click="al.seleccionarConcepto(cobro,curso)" ng-repeat = "cobro in curso.pagos" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
 					<input class="font-xs" ng-class="al.obtenerEstatus(cobro)"  type="text" value="{{cobro.nombre}}" disabled="" title="">
 				</label>
@@ -53,32 +53,32 @@
 		<div class="row">
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Seleccionados" disabled="" class="bg-color-blue txt-color-white">
+					<input  type="text" value="Seleccionados {{al.cantSeleccionados}}" disabled="" class="bg-color-blue txt-color-white">
 				</label>
 			</section>
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Recargos" disabled="" class="bg-color-orange txt-color-white">
+					<input  type="text" value="Pendientes {{al.cantPendientes}}" disabled="" class="">
 				</label>
 			</section>
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Pagados" disabled="" class="bg-color-green txt-color-white">
+					<input  type="text" value="Pagados {{al.cantPagadas}}" disabled="" class="bg-color-green txt-color-white">
 				</label>
 			</section>
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Condonados" disabled="" class="bg-color-blueDark txt-color-white">
+					<input  type="text" value="Condonados {{al.cantCondonadas}}" disabled="" class="bg-color-blueDark txt-color-white">
 				</label>
 			</section>
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Abonados" disabled="" class="bg-color-greenLight txt-color-white">
+					<input  type="text" value="Recargos {{al.cantAtrasadas}}" disabled="" class="bg-color-orange txt-color-white">
 				</label>
 			</section>
 			<section class="col col-2" style="padding-left: 2px; padding-right: 2px; margin-bottom: 5px;">
 				<label class="input">
-					<input  type="text" value="Pendientes" disabled="" class="">
+					<input  type="text" value="Abonados {{al.cantAbonados}}" disabled="" class="bg-color-greenLight txt-color-white">
 				</label>
 			</section>
 		</div>

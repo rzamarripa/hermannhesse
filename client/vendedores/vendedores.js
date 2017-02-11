@@ -26,9 +26,9 @@ function VendedoresCtrl($scope, $meteor, $reactive,  $state, $stateParams, toast
 			return Campus.findOne();
 		},
 	  gerentesVenta : () => {
-		  return Meteor.users.find({roles : ["gerenteVenta"], "profile.campus_id" : Meteor.user() != undefined ? Meteor.user().profile.campus_id : ""});	  
+		  return Meteor.users.find({roles : ["gerenteVenta"], "profile.campus_id" : Meteor.user() != undefined ? Meteor.user().profile.campus_id : ""});
 	  }
-  });  
+  });
   
   this.nuevoVendedor = function()
   {
@@ -49,6 +49,7 @@ function VendedoresCtrl($scope, $meteor, $reactive,  $state, $stateParams, toast
 		vendedor.profile.campus_id = Meteor.user().profile.campus_id;
 		vendedor.profile.seccion_id = Meteor.user().profile.seccion_id;
 		vendedor.profile.usuarioInserto = Meteor.userId();
+		vendedor.profile.nombreCompleto = vendedor.profile.nombre  + " " + vendedor.profile.apPaterno + " " + (vendedor.profile.apMaterno ? vendedor.profile.apMaterno : "");
 		Meteor.call('generarUsuario', "v", vendedor, 'vendedor', function(error, result){
 			if(error){
 				toastr.error('Error al guardar los datos.');
@@ -81,7 +82,7 @@ function VendedoresCtrl($scope, $meteor, $reactive,  $state, $stateParams, toast
       toastr.error('Error al actualizar los datos.');
       return;
 	  }
-		
+		vendedor.profile.nombreCompleto = vendedor.profile.nombre  + " " + vendedor.profile.apPaterno + " " + (vendedor.profile.apMaterno ? vendedor.profile.apMaterno : "");
 		Meteor.call('modificarUsuario', vendedor, 'vendedor');
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
@@ -124,5 +125,15 @@ function VendedoresCtrl($scope, $meteor, $reactive,  $state, $stateParams, toast
 			rc.vendedor.confirmarContrasena = "";
 		}
 	}
+	
+	this.cambiarEstatus = function(id)
+	{
+		var vendedor = Meteor.users.findOne({_id:id});
+		if(vendedor.profile.estatus == true)
+			vendedor.profile.estatus = false;
+		else
+			vendedor.profile.estatus = true;
+		Meteor.call('modificarUsuario', vendedor, "vendedor");
+  };
 	
 };

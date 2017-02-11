@@ -24,6 +24,7 @@
 			    <div class="col-sm-2" valida>
 				    <label>Día Final *</label>
 				    <select ng-model="tn.turno.diaFinal" class="form-control" name="diaFinal">
+					    <option value=""></option>
 					    <option value="L">L</option>
 					    <option value="Ma">Ma</option>
 					    <option value="Mi">Mi</option>
@@ -111,7 +112,7 @@
 							    <span class="caret"></span>
 							    <span class="sr-only">Toggle Dropdown</span>
 							  </button>
-							  <ul class="dropdown-menu text-left">
+							  <ul class="dropdown-menu dropdown-menu-right text-left">
 							    <li><a href="#" ng-click="tn.editar(turno._id)"><i class="fa fa-pencil"></i> Editar</a></li>
 							    <li><a href="#" ng-click="tn.cambiarEstatus(turno._id)">
 							    				<i class="fa fa-{{turno.estatus ? 'trash' : 'check' }}"></i> {{turno.estatus ? "Desactivar" : "Activar" }}

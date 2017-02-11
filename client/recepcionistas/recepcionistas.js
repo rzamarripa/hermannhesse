@@ -114,4 +114,14 @@ function RecepcionistasCtrl($scope, $meteor, $reactive,  $state, $stateParams, t
 		}
 	}
 	
+	this.cambiarEstatus = function(id)
+	{
+		var recepcionista = Meteor.users.findOne({_id:id});
+		if(recepcionista.profile.estatus == true)
+			recepcionista.profile.estatus = false;
+		else
+			recepcionista.profile.estatus = true;
+		Meteor.call('modificarUsuario', recepcionista, "recepcionista");
+  };
+	
 };

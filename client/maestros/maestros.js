@@ -1,7 +1,7 @@
 angular
 .module("casserole")
 .controller("MaestrosCtrl", MaestrosCtrl);
-function MaestrosCtrl($scope, $meteor, $reactive,  $state, $stateParams, toastr){
+function MaestrosCtrl($scope, $meteor, $reactive,  $state, $stateParams, toastr, SaveService){
 	let rc = $reactive(this).attach($scope);
 	
 	this.action = true;
@@ -55,25 +55,25 @@ function MaestrosCtrl($scope, $meteor, $reactive,  $state, $stateParams, toastr)
 
 	this.guardar = function(maestro,form)
 	{
-		if(form.$invalid || !rc.validaContrasena){
+		if(form.$invalid){
       toastr.error('Error al guardar los datos.');
       return;
-		}
-	
+	  }
 		maestro.estatus = true;
 		maestro.campus_id = Meteor.user().profile.campus_id;
 		maestro.usuarioInserto = Meteor.userId();
 		maestro.fechaCreacion = new Date();
-		maestro.campus_id = Meteor.user().profile.campus_id;
-		var id = Maestros.insert(maestro);	
-		maestro.maestro_id = id;
-		Meteor.call('createUsuario', rc.maestro, 'maestro');
-		toastr.success("Maestro Creado \n Usuario Creado");
-		maestro = {};
-		$('.collapse').collapse('hide');
-		this.nuevo = true;
-		form.$setPristine();
-    form.$setUntouched();	
+		// Service
+		SaveService.saveUser('maestros', angular.copy(maestro), 'maestro', function(err, message){
+			if(err){
+				toastr.error(err);
+				return
+			}
+			maestro = {};
+			$('.collapse').collapse('hide');
+			rc.nuevo = true;
+			toastr.success(message);
+		});
 	};
 
 	this.editar = function(id)
@@ -106,11 +106,12 @@ function MaestrosCtrl($scope, $meteor, $reactive,  $state, $stateParams, toastr)
 	this.cambiarEstatus = function(id)
 	{
 		var maestro = Maestros.findOne({_id:id});
-		if(maestro.estatus == true)
+		if(maestro.estatus == true){
 			maestro.estatus = false;
-		else
+		}else{
 			maestro.estatus = true;
-		
+		}
+		Meteor.call('updateUsuario', maestro, maestro._id, 'maestro');
 		Maestros.update({_id:id}, {$set : {estatus : maestro.estatus}});
 	};
 
