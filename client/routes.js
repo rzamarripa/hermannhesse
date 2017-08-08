@@ -34,7 +34,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
       abstract: true,
       template: '<ui-view/>'
     })
-    
+
     .state('anon.login', {
       url: '/login',
       templateUrl: 'client/login/login.ng.html',
@@ -58,10 +58,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
       }
     })
     .state('anon.pagosImprimir', {
-      url: '/pagosImprimir/:pago/:alumno_id',
+      url: '/pagosImprimir/:pago/:folioActual/:alumno_id',
       templateUrl: 'client/pagos/pagosImprimir.ng.html',
       controller: 'PagosImprimirCtrl as pi',
      // params: { 'semanas': ':semanas' , 'id' : ':id'},
+    })
+    .state('anon.pagosImprimirConceptos', {
+      url: '/pagosImprimirConceptos/:seccion_id/:folioActual/:alumno_id',
+      templateUrl: 'client/pagos/pagosImprimirConceptos.html',
+      controller: 'PagosImprimirConceptosCtrl as pi'
     });
   /***************************
    * Login Users Routes
@@ -80,7 +85,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
     })
     .state('root.home', {
       url: '/',
-      templateUrl: 'client/home/home.ng.html',      
+      templateUrl: 'client/home/home.ng.html',
       controller: 'HomeCtrl as ho',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -88,15 +93,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "gerenteVenta" || user.roles[0] == "vendedor" || user.roles[0] == "maestro" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
     })
     .state('root.dashboard', {
       url: '/dashboard',
-      templateUrl: 'client/dashboard/dashboard.html',      
+      templateUrl: 'client/dashboard/dashboard.html',
       controller: 'DashboardCtrl as da',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -104,15 +109,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
     })
     .state('root.actualizarCalificaciones', {
       url: '/actualizarCalificaciones/:alumno_id/:inscripcion_id',
-      templateUrl: 'client/alumnos/actualizarCalificaciones.html',      
+      templateUrl: 'client/alumnos/actualizarCalificaciones.html',
       controller: 'ActualizarCalificacionesCtrl as ac',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -120,15 +125,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
     })
     .state('root.deudores', {
       url: '/deudores',
-      templateUrl: 'client/planPagos/deudores/deudores.html',      
+      templateUrl: 'client/planPagos/deudores/deudores.html',
       controller: 'DeudoresCtrl as de',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -136,15 +141,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
     })
     .state('root.deudoresGrupo', {
       url: '/deudoresGrupo',
-      templateUrl: 'client/planPagos/deudoresGrupo/deudoresGrupo.html',      
+      templateUrl: 'client/planPagos/deudoresGrupo/deudoresGrupo.html',
       controller: 'DeudoresGrupoCtrl as co',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -152,15 +157,15 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
     })
     .state('root.cobranza', {
       url: '/cobranza',
-      templateUrl: 'client/planPagos/cobranza/cobranza.html',      
+      templateUrl: 'client/planPagos/cobranza/cobranza.html',
       controller: 'CobranzaCtrl as oc',
       resolve: {
 				"currentUser": ["$meteor", "toastr", function($meteor, toastr){
@@ -168,8 +173,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -184,8 +189,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -200,8 +205,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -216,8 +221,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "recepcionista" || user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -232,8 +237,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista" || user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -248,8 +253,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -264,12 +269,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    })    
+    })
     .state('root.mensajes', {
       url: '/mensajes',
       templateUrl: 'client/mensajes/mensajes.html',
@@ -280,8 +285,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "maestro" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -296,8 +301,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -322,8 +327,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -338,8 +343,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -354,8 +359,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"  || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -370,8 +375,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -386,8 +391,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -402,8 +407,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -418,8 +423,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -434,7 +439,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -450,8 +455,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -466,8 +471,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -482,8 +487,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -498,8 +503,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -514,8 +519,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -530,8 +535,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -546,8 +551,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -562,8 +567,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -578,8 +583,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -604,8 +609,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -620,8 +625,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -636,8 +641,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -652,8 +657,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -668,8 +673,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -694,12 +699,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })    
+    })
     .state('root.campusDetalle', {
       url: '/campusDetalle/:id',
       templateUrl: 'client/campus/campusDetalle.ng.html',
@@ -710,7 +715,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -726,12 +731,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })    
+    })
     .state('root.aulas', {
       url: '/aulas',
       templateUrl: 'client/aulas/aulas.ng.html',
@@ -742,8 +747,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -758,8 +763,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -784,8 +789,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -800,8 +805,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -816,8 +821,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -831,7 +836,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 	        return $meteor.requireUser();
 	      }]
 	    }
-    })     
+    })
     .state('root.rvoe', {
       url: '/rvoe',
       templateUrl: 'client/rvoe/rvoe.ng.html',
@@ -842,12 +847,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    })     
+    })
     .state('root.conceptosPago', {
       url: '/conceptosPago',
       templateUrl: 'client/conceptosPago/conceptosPago.ng.html',
@@ -858,7 +863,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -874,7 +879,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -890,12 +895,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })    
+    })
     .state('root.editarHorario', {
       url: '/editarHorario/:id',
       templateUrl: 'client/horarios/form.ng.html',
@@ -926,12 +931,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    })       
+    })
     .state('root.vendedores', {
       url: '/vendedores',
       templateUrl: 'client/vendedores/vendedores.html',
@@ -942,7 +947,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -958,8 +963,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -974,7 +979,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "vendedor" || user.roles[0] == "gerenteVenta"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -990,12 +995,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "vendedor"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })        
+    })
     .state('root.prospecto', {
       url: '/prospecto/:id',
       templateUrl: 'client/prospectos/prospecto.html',
@@ -1006,7 +1011,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "vendedor"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1022,7 +1027,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "vendedor"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1033,7 +1038,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
       templateUrl: 'client/pizarron/pizarron.ng.html',
       controller: 'PizarronCtrl',
       controllerAs: 'pzc',
-      
+
     })
     .state('root.etapasVenta', {
       url: '/etapasVenta',
@@ -1045,8 +1050,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director" || user.roles[0] == "gerenteVenta"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1061,8 +1066,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director" || user.roles[0] == "gerenteVenta" || user.roles[0] == 'recepcionista'){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1077,7 +1082,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1093,8 +1098,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1109,12 +1114,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })    
+    })
     .state('root.agregarGasto', {
       url: '/agregarGasto/:tipoGasto',
       templateUrl: 'client/gastos/agregarGasto.ng.html',
@@ -1135,7 +1140,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1151,12 +1156,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(Roles.userIsInRole(Meteor.userId(), ['maestro']) || Roles.userIsInRole(Meteor.userId(), ['coordinadorAcademico'])){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}						
+							return 'UNAUTHORIZED';
+						}
          });
        }]
       }
-    })       
+    })
     .state('root.verAsistencias', {
       url: '/verAsistencias/:grupo_id/:materia_id/:maestro_id',
       templateUrl: 'client/maestro/asistencias/verAsistencias.ng.html',
@@ -1167,7 +1172,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "recepcionista" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1183,7 +1188,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1199,7 +1204,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1215,7 +1220,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1231,7 +1236,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro" || user.roles[0] == "alumno" || user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1247,7 +1252,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno" || user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1263,7 +1268,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro" || user.roles[0] == "alumno" || user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1279,12 +1284,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
       }
-    })    
+    })
     .state('root.capturarCalificaciones', {
       url: '/capturarCalificaciones/:grupo_id/:materia_id/:maestro_id',
       templateUrl: 'client/maestro/calificaciones/calificar.html',
@@ -1295,8 +1300,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1311,8 +1316,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1327,8 +1332,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1343,8 +1348,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1359,8 +1364,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "gerenteVenta" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1375,8 +1380,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "gerenteVenta"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1391,8 +1396,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "maestro"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1407,8 +1412,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1423,12 +1428,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    })    
+    })
     .state('root.gruposActivos', {
       url: '/gruposActivos',
       templateUrl: 'client/gruposActivos/gruposActivos.html',
@@ -1439,7 +1444,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
+							return 'UNAUTHORIZED';
 						}
          });
        }]
@@ -1455,8 +1460,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          	});
        	}]
     	}
@@ -1471,8 +1476,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico" || user.roles[0] == "director" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "recepcionista"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
 					});
 				}]
 			}
@@ -1487,12 +1492,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    }) 
+    })
     .state('root.mediosPublicidad', {
       url: '/mediosPublicidad',
       templateUrl: 'client/mediosPublicidad/mediosPublicidad.ng.html',
@@ -1503,12 +1508,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "admin"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    }) 
+    })
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1524,12 +1529,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    }) 
+    })
     .state('root.calendarios', {
       url: '/calendarios',
       templateUrl: 'client/calendarios/calendarios.html',
@@ -1540,8 +1545,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1556,12 +1561,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "coordinadorAcademico"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
-    })    
+    })
     .state('root.alumnoMuro', {
       url: '/muro',
       templateUrl: 'client/alumno/muro/muro.html',
@@ -1572,8 +1577,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1598,8 +1603,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1614,8 +1619,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1630,8 +1635,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "alumno"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1646,8 +1651,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
 						if(user.roles[0] == "gerenteVenta" || user.roles[0] == "director"){
 							return true;
 						}else{
-							return 'UNAUTHORIZED'; 
-						}					 	
+							return 'UNAUTHORIZED';
+						}
          });
        }]
     	}
@@ -1662,8 +1667,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }
@@ -1678,8 +1683,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "director" || user.roles[0] == "recepcionista" || user.roles[0] == "coordinadorAcademico"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }
@@ -1694,8 +1699,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "director" || user.roles[0] == "admin"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }
@@ -1710,12 +1715,12 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "director" || user.roles[0] == "admin"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }
-    })    
+    })
     .state('root.reporteComisiones', {
       url: '/reporteComisiones',
       templateUrl: 'client/reportes/reporteComisiones.html',
@@ -1726,8 +1731,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "director" || user.roles[0] == "admin"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }
@@ -1742,8 +1747,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
             if(user.roles[0] == "director" || user.roles[0] == "recepcionista" || user.roles[0] == "coordinadorAcademico" || user.roles[0] == "coordinadorFinanciero" || user.roles[0] == "admin"){
               return true;
             }else{
-              return 'UNAUTHORIZED'; 
-            }           
+              return 'UNAUTHORIZED';
+            }
          });
        }]
       }

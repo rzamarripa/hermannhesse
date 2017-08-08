@@ -1,16 +1,16 @@
 angular
   .module('casserole')
   .controller('PagosImprimirCtrl', PagosImprimirCtrl);
- 
+
 function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr) {
 	let rc = $reactive(this).attach($scope);
   this.action = true;
   this.buscar = {};
   this.buscar.nombre = "";
   this.fecha = new Date();
-  
+
 /*
-  
+
   $stateParams.semanas = [{
 			alumno_id	:"9Xuey5kJzCDTCrCAY",
 			anio			:2016,
@@ -57,7 +57,7 @@ function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toa
 		}
   ]
 */
-	
+
 
   this.subTotal = 0.00;
   this.iva = 0.00;
@@ -65,7 +65,8 @@ function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toa
   this.iva = 0.00;
   this.total = this.subTotal + this.iva;
   this.alumno = {};
-  
+  this.folio = $stateParams.folioActual;
+
 	this.subscribe('alumno', () => {
     return [{
 	    id : $stateParams.alumno_id
@@ -86,29 +87,22 @@ function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toa
     this.subscribe("planPagos",()=>{
 		return [{alumno_id : $stateParams.alumno_id, campus_id : Meteor.user() != undefined ? Meteor.user().profile.campus_id : "" }]
 	});
-	
-    
+
+
   rc.helpers({
   		semanas :() =>{
   			var ret ={};
-  			plan=PlanPagos.find({pago_id:$stateParams.pago}).fetch();
-  			//console.log(plan);
-  			/*_.each($stateParams.semanas, function(semana){
-				  rc.subTotal += (semana.importe/1.16);
-				  rc.total += semana.importe;
-				  rc.iva = rc.total-rc.subTotal;
-				  console.log(semana.importe);
-			  });*/
+  			plan = PlanPagos.find({pago_id:$stateParams.pago}).fetch();
+
 				_.each(plan,function (pago) {
 					var fechaActual = moment();
 					var fechaCobro = moment(pago.fecha);
 					var diasRecargo = fechaActual.diff(fechaCobro, 'days')
 					var diasDescuento = fechaCobro.diff(fechaActual, 'days')
-	
+
 					if(!ret["Colegiatura"] )ret["Colegiatura"]=[];
-					
 					ret["Colegiatura"].push({semana:pago.semana,anio:pago.anio,importe:pago.importe})
-					rc.total =pago.importe;
+					rc.total += pago.importe;
 					if(pago.tiempoPago==1 && pago.importe>0){
 						if(!ret["Recargo"])ret["Recargo"]=[];
 						ret["Recargo"].push({semana:pago.semana,anio:pago.anio,importe:pago.importeRecargo})
@@ -120,9 +114,9 @@ function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toa
 						rc.total -=pago.importeDescuento;
 					}
 				})
-				rc.subTotal= rc.total/1.16;
+				rc.subTotal= rc.total;
 				rc.iva = rc.total-rc.subTotal;
-  			return ret
+  			return ret;
 
   		},
 		alumno : () => {
@@ -134,7 +128,7 @@ function PagosImprimirCtrl($scope, $meteor, $reactive, $state, $stateParams, toa
   });
 
 
-  
-  
-  
+
+
+
 };

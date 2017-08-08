@@ -1,33 +1,100 @@
 
-	<div class="container">
+	<div class="container font-xs">
 		<div class="widget-body no-padding">
 			<div class="padding-10">
 				<div class="row text-center">
 					<div class="col-sm-4 col-sm-offset-4">
 						<div>
-							<img src="{{pi.seccion.logo}}" width="200" alt="recibo icon">
+							<img src="{{pi.seccion.logo}}" width="100" alt="recibo icon">
 						</div>
 						<address>
-							<br>
-							<strong>{{pi.seccion.nombreseccion}}</strong>
-							<br><br>
 							{{pi.seccion.direccion}}
 							<br/>
 							{{pi.seccion.ciudad}}, {{pi.seccion.estado}}
 							<br>
-							<abbr title="Phone">TEL:</abbr> {{pi.seccion.telefono1}}
+							<strong>TEL:</strong> {{pi.seccion.telefono1}}
 						</address>
 						<div>
 							<div>
-<!-- 								<strong>RECIBO NO:</strong>{{ pi.pago._id }} -->
-							</div>		
+								<strong>RECIBO NO:</strong> {{ pi.folio }}
+							</div>
 						</div>
 						<div>
 							<div>
 								<strong>FECHA:</strong> {{ pi.fecha | date:'dd-MM-yyyy'}}
-							</div>		
+							</div>
 						</div>
-						<table class="table">
+						<table class="table table-condensed" style="margin-bottom: 0px;">
+							<tr>
+								<td>CONCEPTO</td>
+								<td>DESCRIPCIÓN</td>
+							</tr>
+							<tr ng-repeat="(key, value) in pi.semanas">
+								<td ><strong>{{key}}</strong></td>
+								<td>
+									<table class="table font-xs" style="margin-bottom: 0px;">
+										<tr>
+											<th>Número</th>
+											<th class="text-right">Importe</th>
+										</tr>
+										<tr ng-repeat="semana in value">
+											<td class="text-right">{{semana.semana}} / {{semana.anio}}</td>
+											<td class="text-right">{{semana.importe | currency}}</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="text-align: right"><strong>Subtotal:</strong></td>
+								<td style="text-align: right">{{pi.subTotal | currency}}</td>
+							</tr>
+							<tr>
+								<td style="text-align: right"><strong>IVA:</strong></td>
+								<td style="text-align: right">{{0.00 | currency}}</td>
+							</tr>
+							<tr>
+								<td style="text-align: right"><strong>Total:</strong></td>
+								<td style="text-align: right">{{pi.subTotal | currency}}</td>
+							</tr>
+						</table>
+						<hr/>
+						<p class="font-xs">RECUERDA PAGAR A TIEMPO PARA EVITAR RECARGOS!!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--
+	<div class="container">
+		<div class="widget-body no-padding">
+			<div class="padding-10">
+				<div class="row">
+					<div class="col-sm-4 col-sm-offset-4">
+						<div class="row">
+							<div class="col-sm-4">
+								<img src="{{pi.seccion.logo}}" width="100" alt="recibo icon">
+							</div>
+							<div class="col-sm-8 text-left font-xs">
+								<address>
+									<br>
+									<strong>{{pi.seccion.nombreseccion}}</strong>
+									<br><br>
+									{{pi.seccion.direccion}}
+									<br/>
+									{{pi.seccion.ciudad}}, {{pi.seccion.estado}}
+									<br>
+									<abbr title="Tel">TEL:</abbr> {{pi.seccion.telefono1}}
+									<abbr title="Fecha">FECHA:</abbr> {{ pi.fecha | date:'dd-MM-yyyy'}}
+								</address>
+							</div>
+						</div>
+						<div>
+							<div>
+								<strong>RECIBO NO:</strong>{{ pi.pago._id }}
+							</div>
+						</div>
+						<table class="table font-xs">
 							<tr>
 								<td>CONCEPTO</td>
 								<td>DESCRIPCIÓN</td>
@@ -59,11 +126,12 @@
 								<td style="text-align: right"><strong>Total:</strong></td>
 								<td style="text-align: right">{{pi.subTotal | currency}}</td>
 							</tr>
-						</table>						
+						</table>
 						<hr/>
-						<h3>RECUERDA PAGAR A TIEMPO PARA EVITAR RECARGOS!!</h3>
+						<p class="font-xs">RECUERDA PAGAR A TIEMPO PARA EVITAR RECARGOS!!</p>
 					</div>
 				</div>
-			</div>		
+			</div>
 		</div>
 	</div>
+-->
